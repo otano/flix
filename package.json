@@ -1,0 +1,19 @@
+{
+    "name": "ep_flix",
+    "version": "1.0.0",
+    "description": "API pour le projet Flix",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "joi": "^17.12.2",
+        "mongoose": "^8.2.4"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.0"
+    }
+}

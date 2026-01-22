@@ -1,12 +1,25 @@
+
+
+
+
+
 services:
   mongo:
     image: mongo
     restart: always
     env_file:
-      - mongo.env
-   environment:
+      - .env
+    environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+
+  mongo-import:
+    image: mongo:latest
+    depends_on:
+      - mongo
+    volumes:
+      - ./data:/data_to_import:ro
+    command: /bin/bash /data_to_import/import.sh
 
   mongo-express:
     image: mongo-express
@@ -18,3 +31,19 @@ services:
       ME_CONFIG_BASICAUTH_ENABLED: true
       ME_CONFIG_BASICAUTH_USERNAME: ${ME_CONFIG_BASICAUTH_USERNAME}
       ME_CONFIG_BASICAUTH_PASSWORD: ${ME_CONFIG_BASICAUTH_PASSWORD}
+
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      MONGO_HOST: mongo
+      MONGO_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_DB_NAME: media_library
+    depends_on:
+      - mongo
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run dev
