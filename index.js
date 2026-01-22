@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 
+const directors = require('./routes/directors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -26,6 +27,9 @@ mongoose.connect(mongoUri)
 app.get('/', (req, res) => {
     res.send('Bienvenue sur l\'API EP Flix');
 });
+
+con//routes
+app.use('/api/directors', directors)
 
 // Démarrage du serveur
 app.listen(PORT, () => {
